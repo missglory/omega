@@ -1,10 +1,11 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
 	export let name: string;
-	// import {main} from './sigma/examples/chrome-deps/index';
+	import {main} from './sigma/examples/chrome-deps/index';
 
-	// onMount(async () => {
-	// 	main();
-	// });
+	onMount(async () => {
+		main();
+	});
 </script>
 
 <main>

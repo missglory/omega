@@ -64,7 +64,22 @@ export default {
 		commonjs(),
 		typescript({
 			sourceMap: !production,
-			inlineSources: !production
+			inlineSources: !production,
+			// "extends": @tsconfig/svelte/tsconfig.json", "@tsconfig/svelte/tsconfig.json"],
+			// "extends": "@tsconfig/svelte/tsconfig.json",
+			// extends: "../tsconfig.json",
+			// "include": [
+			//   "src/**/*",
+			//   // "public"
+			// ],
+			"exclude": ["node_modules/*"],
+			"include": ["../../external-types/**/*", "../../examples/**/*", "src/**/*",],
+			"compilerOptions": {
+				"typeRoots": ["../../node_modules/@types/", "../../external-types/"],
+				"target": "es6",
+
+			}
+			// "buildOptions": {
 		}),
 
 		// In dev mode, call `npm run start` once
