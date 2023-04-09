@@ -35,8 +35,13 @@
   }
 
   #sigma-container {
-    width: 800px;
-    height: 600px;
+    width: 100%;
+    height: 100%;
 		position: absolute;
+		top: 0px;
+		left: 0px;
+		bottom: 100%;
+		right: 100%;
+		display: flex; 
   }
 </style>
