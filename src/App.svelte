@@ -1,16 +1,21 @@
 <script lang="ts">
   import { onMount } from "svelte";
   export let name: string;
-  import { main } from "./sigma/examples/chrome-deps/index";
+  // import { main } from "./sigma/examples/chrome-deps/index";
+  import Sigma from "./sigma/examples/chrome-deps/Sigma.svelte";
+  import * as graphology from "graphology";
+
+  export let graph = new graphology.DirectedGraph({});
 
   onMount(async () => {
-    main();
+    // main();
   });
 </script>
 
 <main>
   <h1>{name}!</h1>
-  <div id="sigma-container" />
+  <!-- <div id="sigma-container" /> -->
+<Sigma bind:graph></Sigma>
 </main>
 
 <style>
