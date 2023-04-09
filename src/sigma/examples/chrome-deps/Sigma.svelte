@@ -12,6 +12,7 @@
   import FA2Layout from "graphology-layout-forceatlas2/worker";
   import forceAtlas2 from "graphology-layout-forceatlas2";
     import { onMount } from "svelte";
+    import { State } from "seedrandom";
 
   export const main = async () => {
     Promise.all([fetch("./chrome_deps.json")])
@@ -74,44 +75,15 @@
   //   elem.parentNode.parentNode.removeChild(elem.parentNode);
   // };
 
-  type Selection = {
-    selected?: string;
-    suggest?: Set<string>;
-    // query: string
-  };
 
   export let graph: graphology.DirectedGraph;
+  export let state: State;
+  export let renderer;
 
   function start(dataRaw) {
     // DELIMETER = Object.keys(dataRaw)[0].search(DELIMETER) > -1 ? DELIMETER : "/";
     const container = document.getElementById("sigma-container") as HTMLElement;
 
-    interface State {
-      hoveredNode?: string;
-      searchQuery: string[];
-      sq2: string;
-      inNeighbors: boolean;
-      outNeighbors: boolean;
-
-      selectedNeighbor?: string;
-      selected: Selection[];
-      paths: Map<string, number>[];
-      pathIndex: number;
-
-      hoveredNeighbors?: Set<string>;
-    }
-    const state: State = {
-      searchQuery: ["", ""],
-      sq2: "",
-      inNeighbors: true,
-      outNeighbors: false,
-      selected: [
-        { selected: undefined, suggest: undefined },
-        { selected: undefined, suggest: undefined },
-      ],
-      paths: [],
-      pathIndex: 0,
-    };
 
     Object.keys(dataRaw).forEach((rootNode) => {
       const cRoot = chroma.random()._rgb;
@@ -270,14 +242,6 @@
     // });
 
     layout.start();
-    const renderer = new Sigma(graph, container, {
-      // defaultEdgeType: g_state.edgesRenderer,
-      defaultEdgeType: "edges-fast",
-      edgeProgramClasses: {
-        "edges-default": EdgesDefaultProgram,
-        "edges-fast": EdgesFastProgram,
-      },
-    });
 
     let draggedNode: string | null = null;
     let isDragging = false;
@@ -384,62 +348,6 @@
       pathIndex.dispatchEvent(new InputEvent("input"));
     }
 
-    // function setSearchQuery(query: string, selection: number) {
-    //   state.paths = [];
-    //   if (!query) {
-    //     state.selected[selection] = { selected: undefined, suggest: undefined };
-    //     renderer.refresh();
-    //     return;
-    //   }
-
-    //   if (query[0] === '"') {
-    //     query = "^" + query.substring(1);
-    //   }
-
-    //   if (query.at(-1) === '"') {
-    //     query = query.substring(0, query.length - 1) + "$";
-    //   }
-
-    //   state.searchQuery[selection] = query;
-    //   if (searchInputs[selection].value !== query) {
-    //     searchInputs[selection].value = query;
-    //   }
-
-    //   const suggestions = graph
-    //     .nodes()
-    //     .map((n) => ({
-    //       id: n,
-    //       label: "^" + n + "$",
-    //     }))
-    //     .filter(({ label }) => label.includes(query));
-
-    //   if (suggestions.length === 1 && suggestions[0].label.includes(query)) {
-    //     state.selected[selection] = { selected: suggestions[0].id, suggest: undefined };
-    //     const selectedOther = state.selected[(selection + 1) % 2]?.selected;
-    //     if (selectedOther !== undefined) {
-    //       assignPath(selectedOther, state.selected[selection].selected);
-    //     }
-
-    //     if (selection === 0) {
-    //       const ttInn = document.getElementById("ttInn");
-    //       const ttOutn = document.getElementById("ttOutn");
-    //       const selectedNeighbors = graph.neighbors(state.selected[selection].selected);
-    //       // console.log(selectedNeighbors);
-    //       ttInn.innerHTML = selectedNeighbors.reduce((prev, x, i) => {
-    //         return prev + x + "<br/>";
-    //       }, "");
-    //       // console.log(ttInn.innerHTML);
-    //     }
-    //     const nodePosition = renderer.getNodeDisplayData(state.selected[selection].selected) as Coordinates;
-    //     renderer.getCamera().animate(nodePosition, {
-    //       duration: 500,
-    //     });
-    //   } else {
-    //     state.selected[selection] = { selected: undefined, suggest: new Set(suggestions.map(({ id }) => id)) };
-    //   }
-
-    //   renderer.refresh();
-    // }
 
     function setHoveredNode(node?: string) {
       if (node) {

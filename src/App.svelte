@@ -5,8 +5,17 @@
   import Sigma from "./sigma/examples/chrome-deps/Sigma.svelte";
   import Input from "./lib/Input.svelte";
   import * as graphology from "graphology";
+  import type State from "./State";
 
   export let graph = new graphology.DirectedGraph({});
+  // export let renderer = new Sigma(graph, container, {
+  //     // defaultEdgeType: g_state.edgesRenderer,
+  //     defaultEdgeType: "edges-fast",
+  //     edgeProgramClasses: {
+  //       "edges-default": EdgesDefaultProgram,
+  //       "edges-fast": EdgesFastProgram,
+  //     },
+  //   });
 
   onMount(async () => {
     // main();
@@ -15,12 +24,28 @@
   const testttt = (newValue) => {
     console.log(newValue);
   }
+
+  export let state: State = {
+      searchQuery: ["", ""],
+      sq2: "",
+      inNeighbors: true,
+      outNeighbors: false,
+      selected: [
+        { selected: undefined, suggest: undefined },
+        { selected: undefined, suggest: undefined },
+      ],
+      paths: [],
+      pathIndex: 0,
+    };
+
 </script>
 
 <main>
   <h1>{name}!</h1>
-  <Input onChange={newValue => testttt(newValue)}/>
-  <Sigma bind:graph />
+  {#each [0, 1] as idx}
+    <Input {idx} {state} {graph}/>
+  {/each}
+  <Sigma {graph} {state}/>
 </main>
 
 <style>
