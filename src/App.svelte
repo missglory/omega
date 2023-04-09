@@ -3,6 +3,7 @@
   export let name: string;
   // import { main } from "./sigma/examples/chrome-deps/index";
   import Sigma from "./sigma/examples/chrome-deps/Sigma.svelte";
+  import Input from "./lib/Input.svelte";
   import * as graphology from "graphology";
 
   export let graph = new graphology.DirectedGraph({});
@@ -10,14 +11,16 @@
   onMount(async () => {
     // main();
   });
+
+  const testttt = (newValue) => {
+    console.log(newValue);
+  }
 </script>
 
 <main>
   <h1>{name}!</h1>
+  <Input onChange={newValue => testttt(newValue)}/>
   <Sigma bind:graph />
- 	<div>
-		scrollbar 'hidden'
-	</div> 
 </main>
 
 <style>

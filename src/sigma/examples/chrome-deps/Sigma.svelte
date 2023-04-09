@@ -580,5 +580,6 @@
     right: 100%;
     display: flex;
     background: grey;
+    z-index: -1;
   }
 </style>
