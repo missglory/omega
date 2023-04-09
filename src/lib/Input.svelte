@@ -3,8 +3,9 @@
   // let value = ''
   // $: onChange(value)
 	export let idx: number;
+	export let graph;
 	export let state;
-	export let graph; 
+	export let renderer;
 	// : graphology.DirectedGraph;
 
 	function setSearchQuery(query: string, selection: number) {

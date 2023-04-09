@@ -11,8 +11,9 @@
 
   import FA2Layout from "graphology-layout-forceatlas2/worker";
   import forceAtlas2 from "graphology-layout-forceatlas2";
-    import { onMount } from "svelte";
-    import { State } from "seedrandom";
+  import { onMount } from "svelte";
+  import { State } from "seedrandom";
+  import Input from "../../../lib/Input.svelte";
 
   export const main = async () => {
     Promise.all([fetch("./chrome_deps.json")])
@@ -20,6 +21,17 @@
       .then(Function.prototype.apply.bind(start, start));
   };
 
+  export let graph: graphology.DirectedGraph;
+  export let state: State;
+  export let renderer;
+  // = new Sigma(graph, document.getElementById("sigma-container") as HTMLElement, {
+  //   // defaultEdgeType: g_state.edgesRenderer,
+  //   defaultEdgeType: "edges-fast",
+  //   edgeProgramClasses: {
+  //     "edges-default": EdgesDefaultProgram,
+  //     "edges-fast": EdgesFastProgram,
+  //   },
+  // });
   // const searchInputs = [0, 1].map((v) => {
   //   return document.getElementById("search-input" + v.toString()) as HTMLInputElement;
   // });
@@ -75,15 +87,18 @@
   //   elem.parentNode.parentNode.removeChild(elem.parentNode);
   // };
 
-
-  export let graph: graphology.DirectedGraph;
-  export let state: State;
-  export let renderer;
-
   function start(dataRaw) {
     // DELIMETER = Object.keys(dataRaw)[0].search(DELIMETER) > -1 ? DELIMETER : "/";
     const container = document.getElementById("sigma-container") as HTMLElement;
 
+    renderer = new Sigma(graph, document.getElementById("sigma-container") as HTMLElement, {
+      // defaultEdgeType: g_state.edgesRenderer,
+      defaultEdgeType: "edges-fast",
+      edgeProgramClasses: {
+        "edges-default": EdgesDefaultProgram,
+        "edges-fast": EdgesFastProgram,
+      },
+    });
 
     Object.keys(dataRaw).forEach((rootNode) => {
       const cRoot = chroma.random()._rgb;
@@ -348,7 +363,6 @@
       pathIndex.dispatchEvent(new InputEvent("input"));
     }
 
-
     function setHoveredNode(node?: string) {
       if (node) {
         state.hoveredNode = node;
@@ -476,6 +490,10 @@
 </script>
 
 <div id="sigma-container" />
+
+  {#each [0, 1] as idx}
+    <Input {idx} {graph} {state} {renderer}/>
+  {/each}
 
 <style>
   #sigma-container {

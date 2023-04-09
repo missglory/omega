@@ -16,6 +16,7 @@
   //       "edges-fast": EdgesFastProgram,
   //     },
   //   });
+  export let renderer;
 
   onMount(async () => {
     // main();
@@ -42,10 +43,7 @@
 
 <main>
   <h1>{name}!</h1>
-  {#each [0, 1] as idx}
-    <Input {idx} {state} {graph}/>
-  {/each}
-  <Sigma {graph} {state}/>
+  <Sigma {graph} {state} {renderer}/>
 </main>
 
 <style>
